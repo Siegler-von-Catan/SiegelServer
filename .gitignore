@@ -1,10 +1,13 @@
 # IDEA
-.idea
+.idea/
 *.iml
 
 # Node
 node_modules/
-dist
+dist/
 
 # Environment
 .env
+
+# Build
+static/
