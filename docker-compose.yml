@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  siegelserver:
+    container_name: siegelserver
+    restart: always
+    build: .
+    environment:
+      - PORT=8080
+      - STATIC_FILES=static
+    ports:
+      - "8080:8080"
