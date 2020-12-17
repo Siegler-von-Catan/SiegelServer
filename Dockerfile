@@ -5,6 +5,6 @@ COPY package*.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
-RUN npm run install_static
+RUN npm run download_static
 EXPOSE 8080
 CMD node dist/index.js

@@ -1,0 +1,20 @@
+{
+  "siegel": [
+    {
+      "name": "Quentin",
+      "heightmap": "2911_1.png"
+    },
+    {
+      "name": "Tome",
+      "heightmap": "2911_2.png"
+    },
+    {
+      "name": "Sara",
+      "heightmap": "out2_blur.png"
+    },
+    {
+      "name": "Elena",
+      "heightmap": "out_copy.png"
+    }
+  ]
+}
