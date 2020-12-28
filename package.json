@@ -7,7 +7,7 @@
     "start:dev": "ts-node src/index.ts",
     "start": "ts-node dist/app.js",
     "build": "npx tsc",
-    "install_static": "./download_static.sh"
+    "download_static": "./download_static.sh"
   },
   "author": "Paul Methfessel",
   "license": "MIT",
