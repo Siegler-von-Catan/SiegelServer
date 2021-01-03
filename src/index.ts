@@ -13,7 +13,12 @@ app.use("/", express.static(staticFiles, {extensions: ["html"]}));
 
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
 app.get("/data", (req, res) => {
-    res.json(data);
+    const id = parseInt(req.query.i?.toString());
+    if (!isNaN(id)) {
+        res.json({siegel: data.siegel[id]})
+    } else {
+        res.json(data);
+    }
 });
 
 app.get("/siegel", (req, res) => {

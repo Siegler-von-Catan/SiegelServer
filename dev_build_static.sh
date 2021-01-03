@@ -8,7 +8,7 @@ server_dir=$PWD
 
 cd "$1" || exit
 npm install
-npm run build
+npm run dev:build
 cp -r dist/. "$server_dir/static"
 
 cd "$server_dir" || exit
