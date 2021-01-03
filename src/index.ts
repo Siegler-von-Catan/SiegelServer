@@ -12,7 +12,7 @@ const staticFiles = process.env.STATIC_FILES || "static";
 
 const app = express();
 
-if (process.env.NODE_ENV === "development")
+if (process.env.mode === "dev")
   app.use(cors());
 
 app.use("/", express.static(staticFiles, {extensions: ["html"]}));
@@ -30,6 +30,10 @@ app.get("/data", (req, res) => {
 app.get("/siegel", (req, res) => {
     res.sendFile(req.query.file.toString(), {root: "assets"});
 })
+
+app.get("/browseSealCoordinates", (req, res) => {
+  res.sendFile("browseSealCoordinates.csv", {root: "assets"});
+});
 
 app.listen(port, () => {
     console.log(`Server is listening on Port ${port}`)
