@@ -11,3 +11,6 @@ dist/
 
 # Build
 static/
+
+# Env
+.env
