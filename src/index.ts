@@ -8,14 +8,19 @@ env.config();
 
 const port = process.env.PORT || 8080;
 const staticFiles = process.env.STATIC_FILES || "static";
+const useDev = process.env.USE_DEV || false;
 
 
 const app = express();
 
-if (process.env.mode === "dev")
-  app.use(cors());
+if (useDev) {
+    app.use(cors());
+    console.log("Using cors");
+}
 
-app.use("/", express.static(staticFiles, {extensions: ["html"]}));
+if (!useDev) {
+    app.use("/", express.static(staticFiles, {extensions: ["html"]}));
+}
 
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
 app.get("/data", (req, res) => {
