@@ -11,6 +11,7 @@ dist/
 
 # Build
 static/
+staticBrowse
 
 # Env
 .env
