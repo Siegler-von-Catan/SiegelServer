@@ -66,7 +66,7 @@ app.get("/data", (req, res) => {
 });
 
 const types = ["heightmap", "obj", "original"];
-app.get("/siegel", (req, res) => {
+app.get("/siegeldata", (req, res) => {
     const type = req.query.type.toString();
     const id = req.query.id.toString();
     const siegel = data.siegel[id];
