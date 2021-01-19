@@ -85,7 +85,6 @@ app.get("/browseSealCoordinates", (req, res) => {
 
 app.get("/id", (req, res) => {
   const recordId = req.query.recordid;
-  console.log(recordId);
   if (!recordId) {
     res.sendStatus(400);
   } else {
