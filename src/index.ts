@@ -22,6 +22,20 @@ if (!useDev) {
 }
 
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
+for (let i = 0; i < data.siegel.length; i++) {
+    data.siegel[i].id = i;
+}
+
+app.get("/randomSiegels", (req, res) => {
+    const amount = parseInt(req.query.amount?.toString());
+    if (!isNaN(amount) && amount < data.siegel.length) {
+        const shuffled = [...data.siegel].sort(() => 0.5 - Math.random());
+        res.json({siegel: shuffled.slice(0, amount)});
+    } else {
+        res.status(400);
+    }
+});
+
 app.get("/data", (req, res) => {
     const id = parseInt(req.query.i?.toString());
     if (!isNaN(id)) {
@@ -31,8 +45,18 @@ app.get("/data", (req, res) => {
     }
 });
 
+const types = ["heightmap", "obj", "original"];
 app.get("/siegel", (req, res) => {
-    res.sendFile(req.query.file.toString(), {root: "assets"});
+    const type = req.query.type.toString();
+    const id = req.query.id.toString();
+    const siegel = data.siegel[id];
+    if (!types.includes(type)) {
+        res.sendStatus(400);
+    } else if (!siegel) {
+        res.sendStatus(400);
+    } else {
+        res.sendFile(`${type}/${siegel[type]}`, {root: "assets"});
+    }
 })
 
 app.listen(port, () => {
