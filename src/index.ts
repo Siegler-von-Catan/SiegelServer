@@ -40,7 +40,9 @@ app.use("/", express.static(staticFiles, {extensions: ["html"]}));
 app.use("/staticBrowse", express.static(browseFiles));
 
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
+const recordIdToId = new Map();
 for (let i = 0; i < data.siegel.length; i++) {
+    recordIdToId.set(data.siegel[i].id, String(i));
     data.siegel[i].id = i;
 }
 
@@ -79,6 +81,16 @@ app.get("/siegel", (req, res) => {
 
 app.get("/browseSealCoordinates", (req, res) => {
   res.sendFile("browseSealCoordinates.csv", {root: "assets"});
+});
+
+app.get("/id", (req, res) => {
+  const recordId = req.query.recordid;
+  console.log(recordId);
+  if (!recordId) {
+    res.sendStatus(400);
+  } else {
+    res.send(recordIdToId.get(recordId));
+  }
 });
 
 app.listen(port, () => {
