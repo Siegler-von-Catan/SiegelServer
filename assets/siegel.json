@@ -2,8 +2,6 @@
   "siegel": [
     {
       "name": "<SiegelName>",
-      "original": "675947.png",
-      "obj": "2.stl",
       "heightmap": "out_magick.png"
     },
     {

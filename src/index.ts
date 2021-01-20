@@ -75,7 +75,11 @@ app.get("/siegeldata", (req, res) => {
     } else if (!siegel) {
         res.sendStatus(400);
     } else {
-        res.sendFile(`${type}/${siegel[type]}`, {root: "assets"});
+        if (!siegel[type]) {
+            res.sendStatus(404);
+        } else {
+            res.sendFile(`${type}/${siegel[type]}`, {root: "assets"});
+        }
     }
 })
 
