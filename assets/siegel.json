@@ -2,33 +2,33 @@
   "siegel": [
     {
       "name": "<SiegelName>",
-      "heightmap": "593505.png",
+      "original": "593505.png",
       "obj": "2.stl",
-      "original": "2.png.png"
+      "heightmap": "2.png.png"
     },
     {
       "name": "<SiegelName>",
-      "heightmap": "593837.png",
+      "original": "593837.png",
       "obj": "3.stl",
-      "original": "3.png.png"
+      "heightmap": "3.png.png"
     },
     {
       "name": "<SiegelName>",
-      "heightmap": "594032.png",
+      "original": "594032.png",
       "obj": "4.stl",
-      "original": "4.png.png"
+      "heightmap": "4.png.png"
     },
     {
       "name": "<SiegelName>",
-      "heightmap": "671778.png",
+      "original": "671778.png",
       "obj": "6.stl",
-      "original": "6.png.png"
+      "heightmap": "6.png.png"
     },
     {
       "name": "<SiegelName>",
-      "heightmap": "675947.png",
+      "original": "675947.png",
       "obj": "7.stl",
-      "original": "7.png.png"
+      "heightmap": "7.png.png"
     }
   ]
 }
