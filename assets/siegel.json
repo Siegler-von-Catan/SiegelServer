@@ -4,6 +4,12 @@
       "name": "<SiegelName>",
       "original": "675947.png",
       "obj": "2.stl",
+      "heightmap": "out_magick.png"
+    },
+    {
+      "name": "<SiegelName>",
+      "original": "675947.png",
+      "obj": "2.stl",
       "heightmap": "2.png.png"
     },
     {
