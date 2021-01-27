@@ -65,9 +65,9 @@ app.get("/data", (req, res) => {
     }
 });
 
-const types = ["heightmap", "obj", "original"];
-const prefixes: {[k: string]: string} = {heightmap: "processed-shape", obj: "map", original: "seal"};
-const postfixes: {[k: string]: string} = {heightmap: "png", obj: "stl", seal: "png"};
+const types = ["heightmap", "stl", "original"];
+const prefixes: {[k: string]: string} = {heightmap: "processed-shape", stl: "map", original: "seal"};
+const postfixes: {[k: string]: string} = {heightmap: "png", stl: "stl", original: "png"};
 const refToFile = (type: string, ref: string) =>  `${prefixes[type]}-record_kuniweb_${ref}-img.${postfixes[type]}`;
 
 app.get("/siegeldata", (req, res) => {
