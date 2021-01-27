@@ -46,6 +46,10 @@ for (let i = 0; i < data.siegel.length; i++) {
     data.siegel[i].id = i;
 }
 
+app.get("/", (req, res) => {
+  res.redirect("/home.html")
+});
+
 app.get("/randomSiegels", (req, res) => {
     const amount = parseInt(req.query.amount?.toString());
     if (!isNaN(amount) && amount < data.siegel.length) {
