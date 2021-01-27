@@ -22,8 +22,8 @@ def read_data(xml_file):
     file_id = xml_file[-10:-4]
 
     d['subjects'] = [s.firstChild.nodeValue for s in subjects]
-    d['title'] = title[0].firstChild.nodeValue
-    d['id'] = file_id
+    d['name'] = title[0].firstChild.nodeValue
+    d['lido_id'] = file_id
 
     return d
 
@@ -42,5 +42,5 @@ if __name__ == '__main__':
     for file in raw_files:
         data.append(read_data(os.path.join(raw_folder, file)))
 
-    with open(out_file, 'w') as out:
+    with open(out_file, 'w', encoding="utf-8") as out:
         out.write(to_json(data))

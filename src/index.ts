@@ -42,7 +42,7 @@ app.use("/staticBrowse", express.static(browseFiles));
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
 const recordIdToId = new Map();
 for (let i = 0; i < data.siegel.length; i++) {
-    recordIdToId.set(data.siegel[i].id, String(i));
+    recordIdToId.set(data.siegel[i].lido_id, String(i));
     data.siegel[i].id = i;
 }
 
@@ -66,20 +66,22 @@ app.get("/data", (req, res) => {
 });
 
 const types = ["heightmap", "obj", "original"];
+const prefixes: {[k: string]: string} = {heightmap: "processed-shape", obj: "map", original: "seal"};
+const postfixes: {[k: string]: string} = {heightmap: "png", obj: "stl", seal: "png"};
+const refToFile = (type: string, ref: string) =>  `${prefixes[type]}-record_kuniweb_${ref}-img.${postfixes[type]}`;
+
 app.get("/siegeldata", (req, res) => {
     const type = req.query.type.toString();
     const id = req.query.id.toString();
     const siegel = data.siegel[id];
+    const ref = siegel.lido_id;
+
     if (!types.includes(type)) {
         res.sendStatus(400);
     } else if (!siegel) {
         res.sendStatus(400);
     } else {
-        if (!siegel[type]) {
-            res.sendStatus(404);
-        } else {
-            res.sendFile(`${type}/${siegel[type]}`, {root: "assets"});
-        }
+        res.sendFile(`${type}/${refToFile(type, ref)}`, {root: "assets"});
     }
 })
 
