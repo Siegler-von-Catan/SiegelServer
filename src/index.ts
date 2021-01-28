@@ -90,9 +90,9 @@ app.get("/siegeldata", (req, res) => {
     } else if (type === "stl") {
         // @ts-ignore
         res.zip([
-            {path: refToFile("stl", ref), name: "3D Modell.stl"},
-            {path: "assets/wax_stamp_license.txt", name: "Stempel Lizenz.txt"},
-            {path: "assets/Wax_Stamp_Handle.stl", name: "Griff.stl"},
+            {path: path.join(__dirname, "../assets/stl", refToFile("stl", ref)), name: "3D Modell.stl"},
+            {path: path.join(__dirname, "../assets/wax_stamp_license.txt"), name: "Stempel Lizenz.txt"},
+            {path: path.join(__dirname, "../assets/Wax_Stamp_Handle.stl"), name: "Griff.stl"},
         ], `3D-Modell ${siegel.name}.zip`);
     } else {
         res.sendFile(`${type}/${refToFile(type, ref)}`, {root: "assets"});
