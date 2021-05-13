@@ -19,7 +19,7 @@ Note: `siegel.json` and `staticBrowse` is pre-generated here: https://drive.goog
 
 - Run `npm i`
 - Run `download_static.sh` (Downloads the `release` branch from the webapp and builds it into `static/`)
-- Create a `asset/` folder and add `heightmap`, `stl` and `original` folders with respective data
-- Create a `asset/siegel.json` by running `python convertLido2Json.py lido_folder asset/siegel.json` on a folder with the lido `.xml` files
+- Create a `assets/` folder and add `heightmap`, `stl` and `original` folders with respective data
+- Create a `assets/siegel.json` by running `python convertLido2Json.py lido_folder assets/siegel.json` on a folder with the lido `.xml` files
 - Create a folder `staticBrowse` and add the `thumbnails/` and `browseSealCoordinates.csv`
 - Build the server with `npm run build` and start with `npm start`
