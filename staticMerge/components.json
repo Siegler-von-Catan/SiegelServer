@@ -1,0 +1,34 @@
+{
+  "components": [
+    {
+      "id": 0,
+      "title": "Test",
+      "heightmap": "test.png",
+      "preRendered": "test.png"
+    },
+    {
+      "id": 1,
+      "title": "Test",
+      "heightmap": "test.png",
+      "preRendered": "test.png"
+    },
+    {
+      "id": 2,
+      "title": "Test",
+      "heightmap": "test.png",
+      "preRendered": "test.png"
+    },
+    {
+      "id": 3,
+      "title": "Test",
+      "heightmap": "test.png",
+      "preRendered": "test.png"
+    },
+    {
+      "id": 4,
+      "title": "Test",
+      "heightmap": "test.png",
+      "preRendered": "test.png"
+    }
+  ]
+}

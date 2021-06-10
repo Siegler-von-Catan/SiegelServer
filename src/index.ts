@@ -27,7 +27,8 @@ env.config();
 const port = process.env.PORT || 8080;
 const staticFiles = process.env.STATIC_FILES || "static";
 const useDev = process.env.USE_DEV || false;
-const browseFiles = process.env.STATIC_FILES || "staticBrowse"
+const browseFiles = process.env.STATIC_BROWSE_FILES || "staticBrowse"
+const mergeFiles = process.env.STATIC_MERGE_FILES || "staticMerge"
 
 
 const app = express();
@@ -40,6 +41,7 @@ if (useDev) {
 
 app.use("/", express.static(staticFiles, {extensions: ["html"]}));
 app.use("/staticBrowse", express.static(browseFiles));
+app.use("/staticMerge", express.static(mergeFiles));
 
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
 const recordIdToId = new Map();
