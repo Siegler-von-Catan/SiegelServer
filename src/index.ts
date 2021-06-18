@@ -21,6 +21,8 @@ import express from "express";
 import * as fs from "fs";
 import * as path from 'path';
 import cors from "cors";
+import bodyParser from "body-parser";
+import {merge} from "./merge";
 
 env.config();
 
@@ -43,6 +45,9 @@ app.use("/", express.static(staticFiles, {extensions: ["html"]}));
 app.use("/staticBrowse", express.static(browseFiles));
 app.use("/staticMerge", express.static(mergeFiles));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const data = JSON.parse(fs.readFileSync("assets/siegel.json", "utf-8"));
 const recordIdToId = new Map();
 for (let i = 0; i < data.siegel.length; i++) {
@@ -62,6 +67,11 @@ app.get("/randomSiegels", (req, res) => {
     } else {
         res.status(400);
     }
+});
+
+app.post("/merge", (req, res) => {
+    const elements = req.body;
+    merge(elements);
 });
 
 app.get("/data", (req, res) => {
