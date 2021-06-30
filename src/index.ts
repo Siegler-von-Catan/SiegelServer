@@ -22,7 +22,7 @@ import * as fs from "fs";
 import * as path from 'path';
 import cors from "cors";
 import bodyParser from "body-parser";
-import {merge} from "./merge";
+import Merger from "./merge";
 
 env.config();
 
@@ -69,9 +69,10 @@ app.get("/randomSiegels", (req, res) => {
     }
 });
 
-app.post("/merge", (req, res) => {
+app.post("/merge", async (req, res) => {
     const elements = req.body;
-    merge(elements);
+    res.writeHead(200, {"Content-Type": "image/png"});
+    await Merger.merge(elements, res);
 });
 
 app.get("/data", (req, res) => {

@@ -1,13 +1,14 @@
-import { createCanvas } from "canvas";
-import { fabric } from "fabric";
+import {fabric} from "fabric";
 import fs from "fs";
+import { last } from "lodash";
+import path from "path";
 
-type Vector = [number, number];
+const renderer = require("./canvasRenderer");
 
 interface DrawnCanvas {
     width: number
     height: number
-    elements: DrawnElement[]
+    objects: DrawnElement[]
 }
 
 interface DrawnElement extends fabric.Image {
@@ -19,25 +20,46 @@ export interface SealElement {
     heightmap: string
 }
 
+interface Streamable {
+    write(chunk: any): void;
+    end(): void;
+}
+
 const elements = JSON.parse(fs.readFileSync("staticMerge/components.json", "utf-8")).components as SealElement[];
 
-export function merge(data: object) {
-    const jsonCanvas = data as DrawnCanvas;
+export default class Merger {
+    public static async merge(data: object, response: Streamable) {
+        const canvas = await this.parseCanvas(data as DrawnCanvas);
+        const out = fs.createWriteStream(__dirname + '/helloworld.png');
+        this.renderCanvas(canvas, out);
+        this.renderCanvas(canvas, response);
+    }
 
-    const canvas = new fabric.StaticCanvas(null, { width: jsonCanvas.width, height: jsonCanvas.height});
+    private static async createImageFromUrl(url: string): Promise<fabric.Image> {
+        return new Promise(resolve => fabric.Image.fromURL(url, resolve));
+    }
 
-    jsonCanvas.elements.forEach(elem => {
-        canvas.loadFromJSON(elem, () => {}, (image: DrawnElement) => {
-            const heightmap = "staticMerge/heightmaps/" + elements.find(elem => elem.id === image.sealElementId);
-            image.setSrc(heightmap);
-        });
-    });
+    private static allowedFields = ["cropX", "cropY", "originX", "originY", "top", "left", "width", "height", "scaleX", "scaleY", "flipX", "flipY", "opacity", "angle", "skewX", "skewY"];
 
-    canvas.add(new fabric.Rect({left: 200, top: 100, fill: "blue", width: 100, height: 100}));
+    private static async parseCanvas(data: DrawnCanvas): Promise<fabric.StaticCanvas> {
+        const canvas = new fabric.StaticCanvas(null, {width: data.width, height: data.height});
+        for (const elem of data.objects) {
+            if (isNaN(elem.sealElementId)) continue;
+            const url = "file://" + path.join(__dirname, `/../staticMerge/heightmaps/${elem.sealElementId}.png`);
+            const img = await this.createImageFromUrl(url);
 
-    canvas.renderAll();
+            // Only copy allowed fields
+            for (const allowedField of Merger.allowedFields) {
+                if (allowedField in elem) {
+                    (img as any)[allowedField] = (elem as any)[allowedField];
+                }
+            }
+            canvas.add(img);
+        }
+        return canvas;
+    }
 
-    const out = fs.createWriteStream(__dirname + "/helloworld.png");
-    const stream = (canvas as any).createPNGStream();
-    stream.on("data", (chunk: any) => out.write(chunk))
+    private static renderCanvas(canvas: fabric.StaticCanvas, response: Streamable) {
+        renderer(canvas, response);
+    }
 }
