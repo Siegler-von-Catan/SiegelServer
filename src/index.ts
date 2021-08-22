@@ -21,6 +21,7 @@ import express from "express";
 import * as fs from "fs";
 import * as path from 'path';
 import cors from "cors";
+import datasets from "./datasets";
 
 env.config();
 
@@ -111,6 +112,8 @@ app.get("/id", (req, res) => {
     res.send(recordIdToId.get(recordId));
   }
 });
+
+datasets(app);
 
 app.listen(port, () => {
     console.log(`Server is listening on Port ${port}`)
