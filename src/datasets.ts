@@ -1,22 +1,21 @@
 import {Express, Request, Response} from "express";
 import fs from "fs";
-import {sendPng, tryGetParam} from "./util";
+import {sendPng} from "./util";
+import Validator, {ValidatorInstance} from "./Validator";
 
-const datasets = JSON.parse(fs.readFileSync("assets/datasets.json", "utf-8"));
-// Add id to fields of dataset
-Object.keys(datasets).forEach(id => datasets[id].id = id);
+function readAllDatasets(): Record<string, any> {
+    const d = JSON.parse(fs.readFileSync("assets/datasets.json", "utf-8"));
+    // Add id to fields of dataset
+    Object.keys(d).forEach(id => d[id].id = id);
+    return d;
+}
+export const datasets = readAllDatasets();
 
-function tryGetDataset(req: Request, res: Response): any | null {
-    const id = tryGetParam(req, res, "id");
-    if (id !== null) {
-        const dataset = datasets[id];
-        if (dataset) {
-            return dataset;
-        } else {
-            res.sendStatus(404);
-        }
-    }
-    return null;
+
+export function datasetValidator(req: Request, res: Response, idParam: string = "id"): ValidatorInstance {
+    return Validator.with(req, res)
+        .param(req.params[idParam])
+        .map(id => datasets[id]);
 }
 
 export default (app: Express) => {
@@ -25,14 +24,14 @@ export default (app: Express) => {
     });
 
     app.get("/datasets/:id", (req, res) => {
-        const dataset = tryGetDataset(req, res);
+        const dataset = datasetValidator(req, res).getOrError();
         if (dataset) {
             res.json(dataset);
         }
     });
 
     app.get("/datasets/:id/thumb", (req, res) => {
-        const dataset = tryGetDataset(req, res);
+        const dataset = datasetValidator(req, res).getOrError();
         if (dataset) {
             sendPng(res, `assets/dataset_thumbs/${dataset.thumb}`);
         }
