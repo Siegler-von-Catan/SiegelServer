@@ -2,6 +2,7 @@ import {Express} from "express";
 import {datasets} from "./datasets";
 import Validator from "./Validator";
 import fs from "fs";
+import {sendPng} from "./util";
 
 const maxLimit = 100;
 const defaultLimit = 100;
@@ -41,5 +42,23 @@ export default (app: Express) => {
             dataset,
             itemsCount: items.length
         });
-    })
+    });
+
+    app.get("/datasets/:datasetId/items/:itemId/:dataType", (req, res) => {
+        const v = Validator.with(req, res);
+        const items = v.param("datasetId").map(id => datasetItems[id]).getOrError();
+        if (items === undefined) return;
+        const [success, item, dataType, datasetId] = Validator.check(
+            v.param("itemId").map(id => items[id]),
+            v.param("dataType").in("heightmap", "original", "stl"),
+            v.param("datasetId"));
+        if (!success) return;
+
+        const path = `assets/datasets/${datasetId}/${dataType.toString()}/${item.id}`;
+        if (["heightmap", "original"].includes(dataType.toString())) {
+            sendPng(res, `${path}.png`);
+        } else {
+            res.sendFile(`${path}.stl`);
+        }
+    });
 };

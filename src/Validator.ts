@@ -75,6 +75,12 @@ export class ValidatorInstance {
         return this;
     }
 
+    public in(...options: any[]): this {
+        if (this.failed) return this;
+        if (!options.includes(this.raw)) this.failed = true;
+        return this;
+    }
+
     public orElse(optional: any): this {
         if (this.failed) {
             this.raw = optional;
