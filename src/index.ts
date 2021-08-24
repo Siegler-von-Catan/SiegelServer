@@ -36,34 +36,7 @@ if (useDev) {
     app.use(cors());
 }
 
-// const types = ["heightmap", "stl", "original"];
-// const prefixes: {[k: string]: string} = {heightmap: "processed-shape-", stl: "map-", original: ""};
-// const postfixes: {[k: string]: string} = {heightmap: "png", stl: "stl", original: "jpg"};
-// const refToFile = (type: string, ref: string) =>  `${prefixes[type]}record_kuniweb_${ref}-img.${postfixes[type]}`;
-//
-// app.get("/siegeldata", (req, res) => {
-//     const type = req.query.type.toString();
-//     const id = req.query.id.toString();
-//     const siegel = data.siegel[id];
-//     const ref = siegel.lido_id;
-//
-//     if (!types.includes(type)) {
-//         res.sendStatus(400);
-//     } else if (!siegel) {
-//         res.sendStatus(400);
-//
-//     } else if (type === "stl") {
-//         // @ts-ignore
-//         res.zip([
-//             {path: path.join(__dirname, "../assets/stl", refToFile("stl", ref)), name: "3D Modell.stl"},
-//             {path: path.join(__dirname, "../assets/wax_stamp_license.txt"), name: "Stempel Lizenz.txt"},
-//             {path: path.join(__dirname, "../assets/Wax_Stamp_Handle.stl"), name: "Griff.stl"},
-//         ], `3D-Modell ${siegel.name}.zip`);
-//     } else {
-//         res.sendFile(`${type}/${refToFile(type, ref)}`, {root: "assets"});
-//     }
-// })
-
+app.use("/assets", express.static("assets"));
 
 datasets(app);
 items(app);

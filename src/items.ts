@@ -56,9 +56,9 @@ export default (app: Express) => {
 
         const path = `assets/datasets/${datasetId}/${dataType.toString()}/${item.id}`;
         if (["heightmap", "original"].includes(dataType.toString())) {
-            sendPng(res, `${path}.png`);
+            res.json({file: `${path}.png`});
         } else {
-            res.sendFile(`${path}.stl`);
+            res.json({file: `${path}.stl`});
         }
     });
 };

@@ -14,7 +14,7 @@ export const datasets = readAllDatasets();
 
 export function datasetValidator(req: Request, res: Response, idParam: string = "id"): ValidatorInstance {
     return Validator.with(req, res)
-        .param(req.params[idParam])
+        .param(idParam)
         .map(id => datasets[id]);
 }
 
@@ -33,7 +33,7 @@ export default (app: Express) => {
     app.get("/datasets/:id/thumb", (req, res) => {
         const dataset = datasetValidator(req, res).getOrError();
         if (dataset) {
-            sendPng(res, `assets/dataset_thumbs/${dataset.thumb}`);
+            res.json({file: `assets/dataset_thumbs/${dataset.thumb}`});
         }
     });
 };
