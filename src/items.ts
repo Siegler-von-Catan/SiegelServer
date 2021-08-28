@@ -44,6 +44,18 @@ export default (app: Express) => {
         });
     });
 
+    app.get("/datasets/:datasetId/items/:itemId", (req, res) => {
+        const v = Validator.with(req, res);
+        const items = v.param("datasetId").map(id => datasetItems[id]).getOrError();
+        if (items === undefined) return;
+        const [success, item, dataset] = Validator.check(
+            v.param("itemId").map(id => items[id]),
+            v.param("datasetId").map(id => datasets[id]));
+        if (!success) return;
+
+        res.json({item, dataset});
+    });
+
     app.get("/datasets/:datasetId/items/:itemId/:dataType", (req, res) => {
         const v = Validator.with(req, res);
         const items = v.param("datasetId").map(id => datasetItems[id]).getOrError();
