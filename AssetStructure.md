@@ -53,3 +53,7 @@ assets/
 - Images in `dataset_thumbs/` have the id (for example `siegel`) of their dataset as name
 - Files in `heightmap/`, `original/` and `stl` have the index in `items.json` as their name
 - Folders in `datasets/` have the id of their dataset as name
+
+
+### Hint
+The script `SieglerVonCatan/pipeline/scripts/validate.py` helps to check if the datasets folder is valid.
