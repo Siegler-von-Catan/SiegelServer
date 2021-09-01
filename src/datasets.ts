@@ -33,7 +33,7 @@ export default (app: Express) => {
     app.get("/datasets/:id/thumb", (req, res) => {
         const dataset = datasetValidator(req, res).getOrError();
         if (dataset) {
-            res.json({file: `assets/dataset_thumbs/${dataset.thumb}`});
+            res.json({file: `assets/dataset_thumbs/${dataset.id}.png`});
         }
     });
 };
