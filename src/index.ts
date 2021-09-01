@@ -20,15 +20,14 @@ import env from "dotenv";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import Merger from "./merge";
 import datasets from "./datasets";
 import items from "./items";
+import merge from "./merge";
 
 env.config();
 
 const port = process.env.PORT || 8080;
 const useDev = process.env.USE_DEV || false;
-const mergeFiles = process.env.STATIC_MERGE_FILES || "staticMerge"
 
 
 const app = express();
@@ -39,20 +38,14 @@ if (useDev) {
     app.use(cors());
 }
 
-app.use("/staticMerge", express.static(mergeFiles));
-
 app.use("/assets", express.static("assets"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post("/merge", async (req, res) => {
-    const elements = req.body;
-    res.writeHead(200, {"Content-Type": "image/png"});
-    await Merger.merge(elements, res);
-});
 
 datasets(app);
 items(app);
+merge(app);
 
 app.listen(port, () => {
     console.log(`Server is listening on Port ${port}`)

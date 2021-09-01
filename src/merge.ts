@@ -2,6 +2,7 @@ import {fabric} from "fabric";
 import fs from "fs";
 import { last } from "lodash";
 import path from "path";
+import {Express} from "express";
 
 const renderer = require("./canvasRenderer");
 
@@ -15,7 +16,7 @@ interface DrawnElement extends fabric.Image {
     sealElementId: number
 }
 
-export interface SealElement {
+interface SealElement {
     id: number
     heightmap: string
 }
@@ -25,13 +26,11 @@ interface Streamable {
     end(): void;
 }
 
-const elements = JSON.parse(fs.readFileSync("staticMerge/components.json", "utf-8")).components as SealElement[];
+const elements = JSON.parse(fs.readFileSync("assets/merge/components.json", "utf-8")) as SealElement[];
 
-export default class Merger {
+class Merger {
     public static async merge(data: object, response: Streamable) {
         const canvas = await this.parseCanvas(data as DrawnCanvas);
-        const out = fs.createWriteStream(__dirname + '/helloworld.png');
-        this.renderCanvas(canvas, out);
         this.renderCanvas(canvas, response);
     }
 
@@ -45,7 +44,7 @@ export default class Merger {
         const canvas = new fabric.StaticCanvas(null, {width: data.width, height: data.height});
         for (const elem of data.objects) {
             if (isNaN(elem.sealElementId)) continue;
-            const url = "file://" + path.join(__dirname, `/../staticMerge/heightmaps/${elem.sealElementId}.png`);
+            const url = "file://" + path.join(__dirname, `/../assets/merge/heightmaps/${elem.sealElementId}.png`);
             const img = await this.createImageFromUrl(url);
 
             // Only copy allowed fields
@@ -63,3 +62,15 @@ export default class Merger {
         renderer(canvas, response);
     }
 }
+
+export default (app: Express) => {
+    app.get("/merge", async (req, res) => {
+        const elements = req.body;
+        res.writeHead(200, {"Content-Type": "image/png"});
+        await Merger.merge(elements, res);
+    });
+
+    app.get("/merge/elements", (req, res) => {
+        res.json(elements);
+    });
+};
