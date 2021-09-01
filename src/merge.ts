@@ -64,7 +64,7 @@ class Merger {
 }
 
 export default (app: Express) => {
-    app.get("/merge", async (req, res) => {
+    app.post("/merge", async (req, res) => {
         const elements = req.body;
         res.writeHead(200, {"Content-Type": "image/png"});
         await Merger.merge(elements, res);
