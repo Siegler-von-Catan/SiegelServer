@@ -12,6 +12,7 @@ dist/
 # Build
 static/
 staticBrowse
+staticMerge
 assets/
 
 # Env
