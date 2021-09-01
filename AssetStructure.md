@@ -10,16 +10,16 @@ assets/
   datasets/
     <dataset-id-1>/
       heightmap/
+        0.png
         1.png
-        2.png
         ...
       original
+        0.png
         1.png
-        2.png
         ...
       stl
+        0.stl
         1.stl
-        2.stl
         ...
       items.json
     <dataset-id-2>/
