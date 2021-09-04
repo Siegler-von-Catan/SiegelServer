@@ -19,6 +19,8 @@ function readAllDatasetsAndItems(): Record<string, any> {
 }
 const datasetItems = readAllDatasetsAndItems();
 
+const getItemWithId = (items: any[], id: number) => items[id];
+
 export default (app: Express) => {
     app.get("/datasets/:datasetId/items", (req, res) => {
         const v = Validator.with(req, res);
@@ -46,10 +48,10 @@ export default (app: Express) => {
 
     app.get("/datasets/:datasetId/items/:itemId", (req, res) => {
         const v = Validator.with(req, res);
-        const items = v.param("datasetId").map(id => datasetItems[id]).getOrError();
+        const items: any[] = v.param("datasetId").map(id => datasetItems[id]).getOrError();
         if (items === undefined) return;
         const [success, item, dataset] = Validator.check(
-            v.param("itemId").map(id => items[id]),
+            v.param("itemId").map(id => getItemWithId(items, id)),
             v.param("datasetId").map(id => datasets[id]));
         if (!success) return;
 
@@ -57,11 +59,12 @@ export default (app: Express) => {
     });
 
     app.get("/datasets/:datasetId/items/:itemId/:dataType", (req, res) => {
+        console.log(req.params);
         const v = Validator.with(req, res);
         const items = v.param("datasetId").map(id => datasetItems[id]).getOrError();
         if (items === undefined) return;
         const [success, item, dataType, datasetId] = Validator.check(
-            v.param("itemId").map(id => items[id]),
+            v.param("itemId").map(id => getItemWithId(items, id)),
             v.param("dataType").in("heightmap", "original", "stl"),
             v.param("datasetId"));
         if (!success) return;
